@@ -24,3 +24,6 @@ $utilities: map-get-multiple(
 );
 @import "bootstrap/scss/utilities/api";
 @import "styles/grid";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

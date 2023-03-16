@@ -1,0 +1,18 @@
+<ng-container *ngIf="data && columns">
+  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+      <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+
+      <ng-container *matCellDef="let row">
+        <td mat-cell *ngIf="!column.cellTemplate">{{ row[column.columnDef] }} </td>
+        <td mat-cell *ngIf="column.cellTemplate">
+          <ng-container *ngTemplateOutlet="column.cellTemplate; context: { row }"/>
+        </td>
+      </ng-container>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns | columnDefToString"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns | columnDefToString;"></tr>
+  </table>
+</ng-container>

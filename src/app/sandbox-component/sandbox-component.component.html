@@ -1,0 +1,7 @@
+<h1>Sandbox</h1>
+
+<mc-grid-data [data]="data$ | async" [columns]="columns"></mc-grid-data>
+
+<ng-template #actionCell let-row="row">
+  <button (click)="doAction(row)">Action button</button>
+</ng-template>
