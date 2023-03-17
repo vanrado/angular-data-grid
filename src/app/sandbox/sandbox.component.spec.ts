@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SandboxComponentComponent } from './sandbox-component.component';
+import { SandboxComponent } from './sandbox.component';
 
 describe('SandboxComponentComponent', () => {
-  let component: SandboxComponentComponent;
-  let fixture: ComponentFixture<SandboxComponentComponent>;
+  let component: SandboxComponent;
+  let fixture: ComponentFixture<SandboxComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SandboxComponentComponent ]
+      declarations: [ SandboxComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SandboxComponentComponent);
+    fixture = TestBed.createComponent(SandboxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -38,10 +38,6 @@ export class GridDataComponent<T> implements AfterViewInit, OnInit {
     }
   }
 
-  onClick($event: MouseEvent) {
-    console.log('sort', this.sort);
-  }
-
   ngOnInit(): void {
     if (this.dataSource) {
       this.dataSource.loadData()

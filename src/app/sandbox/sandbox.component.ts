@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {GridDataComponent} from '../shared/grid-data/grid-data/grid-data.component';
 import {CommonModule} from '@angular/common';
 import {GridDataColumn} from '../shared/grid-data/grid-data-column';
@@ -10,11 +10,11 @@ import {PeriodicElement} from './data/periodic-element';
 @Component({
   standalone: true,
   selector: 'app-sandbox-component',
-  templateUrl: './sandbox-component.component.html',
-  styleUrls: ['./sandbox-component.component.scss'],
+  templateUrl: './sandbox.component.html',
+  styleUrls: ['./sandbox.component.scss'],
   imports: [CommonModule, GridDataComponent],
 })
-export class SandboxComponentComponent implements OnInit {
+export class SandboxComponent implements OnInit {
   @ViewChild('actionCell', {static: true}) actionCell!: TemplateRef<any>;
   gridDataSource: GridDataSource<PeriodicElement>;
   columns: GridDataColumn[] | undefined;
