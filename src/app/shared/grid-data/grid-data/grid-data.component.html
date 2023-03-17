@@ -1,7 +1,10 @@
-<ng-container *ngIf="data && columns">
-  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+<button (click)="onClick($event)">Test button grid-data</button>
+
+<ng-container *ngIf="columns && dataSource">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-      <th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header
+          sortActionDescription="Sort by number">{{ column.header }}</th>
 
       <ng-container *matCellDef="let row">
         <td mat-cell *ngIf="!column.cellTemplate">{{ row[column.columnDef] }} </td>
@@ -12,7 +15,9 @@
 
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="columns | columnDefToString"></tr>
     <tr mat-row *matRowDef="let row; columns: columns | columnDefToString;"></tr>
+    <tr mat-header-row *matHeaderRowDef="columns | columnDefToString"></tr>
   </table>
+
+  <div *ngIf="dataSource.loading$ | async">Loading...</div>
 </ng-container>

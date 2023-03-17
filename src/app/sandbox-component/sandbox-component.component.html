@@ -1,7 +1,15 @@
 <h1>Sandbox</h1>
 
-<mc-grid-data [data]="data$ | async" [columns]="columns"></mc-grid-data>
+<div>
+  <h1>Filtering</h1>
+  <button (click)="onClick($event)">Reset</button>
+  Name: <input (keyup)="applyFilter($event, 'name')" placeholder="Filter"> <br>
+  Position: <input (keyup)="applyFilter($event, 'position')" placeholder="Filter"> <br>
+  Symbol: <input (keyup)="applyFilter($event, 'symbol')" placeholder="Filter"> <br>
+</div>
+
+<mc-grid-data [dataSource]="gridDataSource" [columns]="columns"></mc-grid-data>
 
 <ng-template #actionCell let-row="row">
-  <button (click)="doAction(row)">Action button</button>
+  <button (click)="doAction(row)">Action</button>
 </ng-template>
