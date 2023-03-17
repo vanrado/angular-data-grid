@@ -33,9 +33,11 @@ export class DocumentsComponent {
     ];
   }
 
-  applyFilter($event: KeyboardEvent, name: string) {
-
+  applyFilter(event: Event, column: string) {
+    const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.gridDataSource.applyFilter(value, column);
   }
+
 
   onClick() {
 
