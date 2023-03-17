@@ -1,15 +1,6 @@
-import {Injectable} from '@angular/core';
-import {delay, Observable, of} from 'rxjs';
+import {PeriodicElement} from './periodic-element';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  action: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
+export const ELEMENT_DATA: PeriodicElement[] = [
   {
     position: 1,
     name: 'Hydrogen',
@@ -81,14 +72,3 @@ const ELEMENT_DATA: PeriodicElement[] = [
     action: 'L',
   },
 ];
-
-@Injectable({ providedIn: 'root' })
-export class SandboxApiService {
-
-  constructor() {
-  }
-
-  public getData(): Observable<any> {
-    return of(ELEMENT_DATA).pipe(delay(2000));
-  }
-}

@@ -2,9 +2,10 @@ import {AfterViewInit, Component, OnInit, TemplateRef, ViewChild} from '@angular
 import {GridDataComponent} from '../shared/grid-data/grid-data/grid-data.component';
 import {CommonModule} from '@angular/common';
 import {GridDataColumn} from '../shared/grid-data/grid-data-column';
-import {GridDataSource2} from '../shared/grid-data/grid-data-source2';
-import {SandboxGridDataSource} from './sandbox-grid-data-source';
-import {SandboxApiService} from './sandbox-api.service';
+import {GridDataSource} from '../shared/grid-data/grid-data-source';
+import {SandboxApiService} from './data/sandbox-api.service';
+import {SandboxGridDataLoadStrategy} from './data/sandbox-grid-data-load-strategy';
+import {PeriodicElement} from './data/periodic-element';
 
 @Component({
   standalone: true,
@@ -13,13 +14,13 @@ import {SandboxApiService} from './sandbox-api.service';
   styleUrls: ['./sandbox-component.component.scss'],
   imports: [CommonModule, GridDataComponent],
 })
-export class SandboxComponentComponent implements OnInit, AfterViewInit {
+export class SandboxComponentComponent implements OnInit {
   @ViewChild('actionCell', {static: true}) actionCell!: TemplateRef<any>;
-  gridDataSource: GridDataSource2;
+  gridDataSource: GridDataSource<PeriodicElement>;
   columns: GridDataColumn[] | undefined;
 
-  constructor(sandboxApiService: SandboxApiService) {
-    this.gridDataSource = new SandboxGridDataSource(sandboxApiService);
+  constructor(private sandboxApiService: SandboxApiService) {
+    this.gridDataSource = new GridDataSource(new SandboxGridDataLoadStrategy(sandboxApiService));
   }
 
   ngOnInit(): void {
@@ -33,15 +34,11 @@ export class SandboxComponentComponent implements OnInit, AfterViewInit {
     console.log('ngOnInit', this.columns);
   }
 
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit', this.columns);
-  }
-
   doAction(element: any): void {
     console.log('element', element);
   }
 
-  onClick($event: MouseEvent) {
+  onClick() {
     this.gridDataSource?.loadData();
     this.gridDataSource.resetFilter();
   }

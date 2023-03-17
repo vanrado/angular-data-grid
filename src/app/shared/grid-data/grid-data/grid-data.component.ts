@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
 import {GridDataColumn} from '../grid-data-column';
 import {MatSort, MatSortModule} from '@angular/material/sort';
-import {GridDataSource2} from '../grid-data-source2';
+import {GridDataSource} from '../grid-data-source';
 
 @Pipe({
   name: 'columnDefToString',
@@ -22,9 +22,9 @@ export class ColumnDefToString implements PipeTransform {
   templateUrl: './grid-data.component.html',
   styleUrls: ['./grid-data.component.scss'],
 })
-export class GridDataComponent implements AfterViewInit, OnInit {
+export class GridDataComponent<T> implements AfterViewInit, OnInit {
   @Input() columns: GridDataColumn[] | undefined;
-  @Input() dataSource: GridDataSource2 | null = null;
+  @Input() dataSource: GridDataSource<T> | null = null;
   @ViewChild(MatSort) sort!: MatSort;
 
   announceSortChange(event: any) {
@@ -36,7 +36,6 @@ export class GridDataComponent implements AfterViewInit, OnInit {
     if (this.dataSource) {
       this.dataSource.sort = this.sort;
     }
-
   }
 
   onClick($event: MouseEvent) {

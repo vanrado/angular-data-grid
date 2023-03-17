@@ -1,118 +1,68 @@
-import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject, delay, Observable, of} from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
-import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+import {GridDataLoadStrategy} from './grid-data-load-strategy';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  action: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    name: 'Hydrogen',
-    weight: 1.0079,
-    symbol: 'H',
-    action: 'L',
-  },
-  {
-    position: 2,
-    name: 'Helium',
-    weight: 4.0026,
-    symbol: 'He',
-    action: 'L',
-  },
-  {
-    position: 3,
-    name: 'Lithium',
-    weight: 6.941,
-    symbol: 'Li',
-    action: 'L',
-  },
-  {
-    position: 4,
-    name: 'Beryllium',
-    weight: 9.0122,
-    symbol: 'Be',
-    action: 'L',
-  },
-  {
-    position: 5,
-    name: 'Boron',
-    weight: 10.811,
-    symbol: 'B',
-    action: 'L',
-  },
-  {
-    position: 6,
-    name: 'Carbon',
-    weight: 12.0107,
-    symbol: 'C',
-    action: 'L',
-  },
-  {
-    position: 7,
-    name: 'Nitrogen',
-    weight: 14.0067,
-    symbol: 'N',
-    action: 'L',
-  },
-  {
-    position: 8,
-    name: 'Oxygen',
-    weight: 15.9994,
-    symbol: 'O',
-    action: 'L',
-  },
-  {
-    position: 9,
-    name: 'Fluorine',
-    weight: 18.9984,
-    symbol: 'F',
-    action: 'L',
-  },
-  {
-    position: 10,
-    name: 'Neon',
-    weight: 20.1797,
-    symbol: 'Ne',
-    action: 'L',
-  },
-];
-
-export class GridDataSource implements DataSource<any> {
-  private dataSubject = new BehaviorSubject<any[]>([]);
+export class GridDataSource<T> extends MatTableDataSource<T> {
   private loadingSubject = new BehaviorSubject<boolean>(false);
+  private gridDataFilter: { [key: string]: string } = {};
+  private dataLoadStrategy: GridDataLoadStrategy<T>;
   public loading$ = this.loadingSubject.asObservable();
-  public sort: MatSort | undefined;
 
-  constructor() {
+  constructor(dataLoadStrategy: GridDataLoadStrategy<T>) {
+    super();
+    this.filterPredicate = this.multipleCustomFilter;
+    this.dataLoadStrategy = dataLoadStrategy;
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<any[]> {
-    console.log('connect', this.sort);
-    return this.dataSubject.asObservable();
+  override connect(): BehaviorSubject<any[]> {
+    return super.connect();
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
-    console.log('datasource disconnect');
-    this.dataSubject.complete();
-    this.loadingSubject.complete();
+  override disconnect() {
+    super.disconnect();
   }
 
-  loadData(): void {
-    console.log('loadData', this.sort);
+  /*
+ * Override
+ * Custom implementation of filter matching. Support for one or multiple criteria.
+ * Checks if a data object matches the data source's filter string.
+ * By default, each data object is converted to a string of its properties and returns
+ * true if the filter has at least one occurrence in that string. By default,
+ * the filter string has its whitespace trimmed and the match is case-insensitive.
+ */
+  protected multipleCustomFilter = (rowData: any, filter: string): boolean => {
+    let searchTerms: Record<string, string> = JSON.parse(filter);
+    let isMatch = true;
+    for (const [key, value] of Object.entries(searchTerms)) {
+      if (value && String(rowData[key]).toLowerCase().indexOf(value) === -1) {
+        isMatch = false;
+        break;
+      }
+
+    }
+    return isMatch;
+  }
+
+  public loadData(): void {
     this.loadingSubject.next(true);
-    of(ELEMENT_DATA).pipe(
-      delay(2000),
-      catchError(() => of([])),
-      finalize(() => this.loadingSubject.next(false))
-    ).subscribe(products => {
-      this.dataSubject.next(products);
-    });
+    this.dataLoadStrategy.loadData()
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject.next(false))
+      )
+      .subscribe((data) => {
+        this.data = data;
+      });
+  }
+
+  public applyFilter(value: string, column: string): void {
+    this.gridDataFilter[column] = value.trim().toLowerCase();
+    this.filter = JSON.stringify(this.gridDataFilter);
+  }
+
+  public resetFilter(): void {
+    this.gridDataFilter = {};
+    this.filter = JSON.stringify(this.gridDataFilter);
   }
 }
