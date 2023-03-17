@@ -1,0 +1,10 @@
+<h1>DataAudit</h1>
+
+<div>
+  <h1>Filtering</h1>
+  <button (click)="onClick()">Reset</button>
+  User: <input (keyup)="applyFilter($event, 'user')" placeholder="Filter"> <br>
+  Action: <input (keyup)="applyFilter($event, 'action')" placeholder="Filter"> <br>
+</div>
+
+<mc-grid-data [dataSource]="gridDataSource" [columns]="columns"></mc-grid-data>
