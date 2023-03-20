@@ -1,8 +1,18 @@
 <ng-container *ngIf="columns && dataSource">
-  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">\
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <input type="checkbox" (change)="toggleAllSelection()" [checked]="isAllSelected()"/>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <input type="checkbox" (click)="$event.stopPropagation()" (change)="toggleSelection(row)" [checked]="isRowSelected(row)"/>
+      </td>
+    </ng-container>
+
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
       <th mat-header-cell *matHeaderCellDef mat-sort-header
-          sortActionDescription="Sort by number">{{ column.header }}</th>
+          sortActionDescription="Sort by">{{ column.header }}</th>
 
       <ng-container *matCellDef="let row">
         <td mat-cell *ngIf="!column.cellTemplate">{{ row[column.columnDef] }} </td>
@@ -13,8 +23,8 @@
 
     </ng-container>
 
-    <tr mat-row *matRowDef="let row; columns: columns | columnDefToString;"></tr>
-    <tr mat-header-row *matHeaderRowDef="columns | columnDefToString"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['select'].concat(columns | columnDefToString);"></tr>
+    <tr mat-header-row *matHeaderRowDef="['select'].concat(columns | columnDefToString)"></tr>
   </table>
 
   <div *ngIf="dataSource.loading$ | async">Loading...</div>

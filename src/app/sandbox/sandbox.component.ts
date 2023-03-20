@@ -18,6 +18,7 @@ export class SandboxComponent implements OnInit {
   @ViewChild('actionCell', {static: true}) actionCell!: TemplateRef<any>;
   gridDataSource: GridDataSource<PeriodicElement>;
   columns: GridDataColumn[] | undefined;
+  selectedItems: PeriodicElement[] = [];
 
   constructor(private sandboxApiService: SandboxApiService) {
     this.gridDataSource = new GridDataSource(new SandboxGridDataLoadStrategy(sandboxApiService));
@@ -46,5 +47,9 @@ export class SandboxComponent implements OnInit {
   applyFilter(event: Event, column: string) {
     const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.gridDataSource.applyFilter(value, column);
+  }
+
+  onSelectedItemsChange(event: PeriodicElement[]) {
+    console.log('onSelectedItemsChange', {event, selectedItems: this.selectedItems});
   }
 }
