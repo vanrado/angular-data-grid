@@ -23,8 +23,8 @@
 
     </ng-container>
 
-    <tr mat-row *matRowDef="let row; columns: ['select'].concat(columns | columnDefToString);"></tr>
-    <tr mat-header-row *matHeaderRowDef="['select'].concat(columns | columnDefToString)"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['select'].concat(columns | mcColumnDefToString);"></tr>
+    <tr mat-header-row *matHeaderRowDef="['select'].concat(columns | mcColumnDefToString)"></tr>
   </table>
 
   <div *ngIf="dataSource.loading$ | async">Loading...</div>

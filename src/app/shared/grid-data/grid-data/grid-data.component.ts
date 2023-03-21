@@ -18,16 +18,7 @@ import {GridDataSelectionModel} from '../types/grid-data-selection-model';
 import {GridPaginationComponent} from '../grid-pagination/grid-pagination.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {FormsModule} from '@angular/forms';
-
-@Pipe({
-  name: 'columnDefToString',
-  standalone: true,
-})
-export class ColumnDefToString implements PipeTransform {
-  transform(value: GridDataColumn[], ...args: any[]): string[] {
-    return value.map(columnDef => columnDef.columnDef);
-  }
-}
+import {ColumnDefToString} from '../columndef-to-string/column-def-to-string.pipe';
 
 @Component({
   selector: 'mc-grid-data',

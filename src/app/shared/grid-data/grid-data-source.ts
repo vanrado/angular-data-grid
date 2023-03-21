@@ -60,11 +60,15 @@ export class GridDataSource<T> extends MatTableDataSource<T, GridPaginationCompo
 
   public resetFilter(): void {
     this.gridDataFilter = {};
-    this.filter = JSON.stringify(this.gridDataFilter);
+    this.filter = '';
   }
 
   public getPagedData(): T[] {
     return this.pageData;
+  }
+
+  public getCurrentFilter(): string {
+    return this.filter;
   }
 
   /*
