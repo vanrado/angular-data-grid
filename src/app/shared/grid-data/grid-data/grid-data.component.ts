@@ -3,10 +3,10 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
-  Pipe,
-  PipeTransform,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -18,16 +18,16 @@ import {GridDataSelectionModel} from '../types/grid-data-selection-model';
 import {GridPaginationComponent} from '../grid-pagination/grid-pagination.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {FormsModule} from '@angular/forms';
-import {ColumnDefToString} from '../columndef-to-string/column-def-to-string.pipe';
 
 @Component({
   selector: 'mc-grid-data',
   standalone: true,
-  imports: [CommonModule, MatTableModule, ColumnDefToString, MatSortModule, GridPaginationComponent, MatPaginatorModule, FormsModule],
+  imports: [CommonModule, MatTableModule, MatSortModule, GridPaginationComponent, MatPaginatorModule, FormsModule],
   templateUrl: './grid-data.component.html',
   styleUrls: ['./grid-data.component.scss'],
 })
-export class GridDataComponent<T> implements AfterViewInit, OnInit {
+export class GridDataComponent<T> implements AfterViewInit, OnInit, OnChanges {
+
   @Input() columns: GridDataColumn[] | undefined;
   @Input() dataSource: GridDataSource<T> | null = null;
   @Input() selectable: boolean = false;
@@ -40,11 +40,8 @@ export class GridDataComponent<T> implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(GridPaginationComponent) paginator: GridPaginationComponent<T> | undefined;
   isAllSelected: boolean = false;
+  columnsDefs: string[] = [];
   private selectionModel: GridDataSelectionModel<T> = new GridDataSelectionModel(true, [] as T[]);
-
-  announceSortChange(event: any) {
-    // do some logic if necessary
-  }
 
   ngAfterViewInit(): void {
     if (this.dataSource) {
@@ -55,10 +52,24 @@ export class GridDataComponent<T> implements AfterViewInit, OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectable']) {
+      this.updateSelectColumn();
+    }
+
+    if (changes['columns']) {
+      this.updateTransformedColumns();
+    }
+  }
+
   ngOnInit(): void {
     if (this.dataSource) {
       this.dataSource.loadData();
     }
+  }
+
+  announceSortChange(event: any) {
+    // do some logic if necessary
   }
 
   public toggleSelection(row: T): void {
@@ -87,6 +98,31 @@ export class GridDataComponent<T> implements AfterViewInit, OnInit {
 
   onPageChanged(): void {
     this.isAllSelected = false;
+  }
+
+  private updateTransformedColumns(): void {
+    if (this.columns) {
+      this.columnsDefs = this.columns.map(column => column.columnDef);
+    }
+  }
+
+  /*
+   * Update the columns array in the component class to include the select column only when the selectable input is set to true.
+   */
+  private updateSelectColumn(): void {
+    if (!this.columns) {
+      return;
+    }
+
+    const selectColumn: GridDataColumn = { columnDef: 'select', header: ''};
+
+    if (this.selectable) {
+      if (!this.columns.some(column => column.columnDef === 'select')) {
+        this.columns.unshift(selectColumn);
+      }
+    } else {
+      this.columns = this.columns.filter(column => column.columnDef !== 'select');
+    }
   }
 }
 
