@@ -33,7 +33,6 @@ export class SandboxComponent implements OnInit {
       {columnDef: 'symbol', header: 'Symbol'},
       {columnDef: 'action', header: 'Action', cellTemplate: this.actionCell},
     ];
-    console.log('ngOnInit', this.columns);
   }
 
   doAction(element: any): void {

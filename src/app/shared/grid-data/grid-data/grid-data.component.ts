@@ -28,14 +28,37 @@ import {FormsModule} from '@angular/forms';
 })
 export class GridDataComponent<T> implements AfterViewInit, OnInit, OnChanges {
 
+  /**
+   * An array of GridDataColumn objects that define the columns in the table. Each object should have a columnDef (unique identifier for the column) and a header (text displayed in the header row).
+   */
   @Input() columns: GridDataColumn[] | undefined;
+  /**
+   *  An instance of GridDataSource that is responsible for fetching and managing the data displayed in the table.
+   */
   @Input() dataSource: GridDataSource<T> | null = null;
+  /**
+   * A boolean value that indicates whether rows in the table can be selected. When set to true, a selection checkbox column will be added to the table.
+   */
   @Input() selectable: boolean = false;
+  /**
+   *  An array of selected items. This can be used to pre-select rows in the table.
+   */
   @Input() selectedItems: T[] = [];
+  /**
+   * A boolean value that indicates whether the table should have pagination.
+   */
   @Input() pageable: boolean = false;
+  /**
+   * The number of items displayed per page.
+   */
   @Input() pageSize: number = 5;
+  /**
+   * An array of numbers representing the available page size options.
+   */
   @Input() pageSizeOptions: number[] = [5, 10, 25, 50];
-  @Input() page: number = 5;
+  /**
+   *  An event that is emitted when the selection changes. The event payload contains the updated array of selected items.
+   */
   @Output() selectedItemsChange = new EventEmitter<T[]>();
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(GridPaginationComponent) paginator: GridPaginationComponent<T> | undefined;
