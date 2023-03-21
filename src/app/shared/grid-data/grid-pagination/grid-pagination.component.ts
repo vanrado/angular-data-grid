@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatTableDataSourcePaginator} from '@angular/material/table';
 import {Subject} from 'rxjs';
+import {GRID_DATA_CONFIG} from '../grid-data.config';
 
 @Component({
   selector: 'mc-grid-pagination',
@@ -11,8 +12,8 @@ import {Subject} from 'rxjs';
   imports: [CommonModule, MatPaginatorModule, FormsModule],
   templateUrl: './grid-pagination.component.html',
 })export class GridPaginationComponent<T> implements MatTableDataSourcePaginator {
-  @Input() pageSizeOptions: number[] = [10, 25, 50];
-  @Input() pageSize = 10;
+  @Input() pageSizeOptions: number[] = GRID_DATA_CONFIG.PAGINATION.DEFAULT_PAGE_SIZE_OPTIONS;
+  @Input() pageSize = GRID_DATA_CONFIG.PAGINATION.DEFAULT_PAGE_SIZE;
   @Input() length = 0;
   @Input() pageIndex = 0;
   @Output() page = new EventEmitter<any>();
@@ -20,11 +21,6 @@ import {Subject} from 'rxjs';
   initialized: Subject<void> = new Subject();
   totalPages: number = 0;
   private totalLength: number = 0;
-
-  constructor() {}
-
-  ngOnInit() {
-  }
 
   public nextPage(): void {
     if (this.hasNextPage()) {

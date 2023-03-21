@@ -1,7 +1,7 @@
 import {BehaviorSubject, map, of} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
 import {MatTableDataSource} from '@angular/material/table';
-import {GridDataLoadStrategy} from './grid-data-load-strategy';
+import {GridDataLoadStrategy} from './types/grid-data-load-strategy';
 import {GridPaginationComponent} from './grid-pagination/grid-pagination.component';
 
 export class GridDataSource<T> extends MatTableDataSource<T, GridPaginationComponent<T>> {

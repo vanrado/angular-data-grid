@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {GridDataSource} from '../shared/grid-data/grid-data-source';
 import {ConfigAudit} from './data/config-audit';
-import {GridDataColumn} from '../shared/grid-data/grid-data-column';
+import {GridDataColumn} from '../shared/grid-data/types/grid-data-column';
 import {ConfigAuditService} from './data/data-audit-api.service';
 import {ConfigAuditGridDataLoadStrategy} from './data/config-audit-grid-data-load-strategy';
 import {GridDataComponent} from '../shared/grid-data/grid-data/grid-data.component';

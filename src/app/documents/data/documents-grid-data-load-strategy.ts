@@ -1,4 +1,4 @@
-import {GridDataLoadStrategy} from '../../shared/grid-data/grid-data-load-strategy';
+import {GridDataLoadStrategy} from '../../shared/grid-data/types/grid-data-load-strategy';
 import {Observable} from 'rxjs';
 import {Document} from './document';
 import {DocumentService} from './documents-api.service';

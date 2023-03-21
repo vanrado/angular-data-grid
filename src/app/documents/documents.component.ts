@@ -5,7 +5,7 @@ import {GridDataSource} from '../shared/grid-data/grid-data-source';
 import {Document} from './data/document';
 import {DocumentService} from './data/documents-api.service';
 import {DocumentsGridDataLoadStrategy} from './data/documents-grid-data-load-strategy';
-import {GridDataColumn} from '../shared/grid-data/grid-data-column';
+import {GridDataColumn} from '../shared/grid-data/types/grid-data-column';
 
 @Component({
   selector: 'app-documents',

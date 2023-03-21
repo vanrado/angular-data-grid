@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {GridDataComponent} from '../shared/grid-data/grid-data/grid-data.component';
 import {CommonModule} from '@angular/common';
-import {GridDataColumn} from '../shared/grid-data/grid-data-column';
+import {GridDataColumn} from '../shared/grid-data/types/grid-data-column';
 import {GridDataSource} from '../shared/grid-data/grid-data-source';
 import {SandboxApiService} from './data/sandbox-api.service';
 import {SandboxGridDataLoadStrategy} from './data/sandbox-grid-data-load-strategy';

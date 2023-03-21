@@ -11,10 +11,10 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
-import {GridDataColumn} from '../grid-data-column';
+import {GridDataColumn} from '../types/grid-data-column';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {GridDataSource} from '../grid-data-source';
-import {GridDataSelectionModel} from '../grid-data-selection-model';
+import {GridDataSelectionModel} from '../types/grid-data-selection-model';
 import {GridPaginationComponent} from '../grid-pagination/grid-pagination.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {FormsModule} from '@angular/forms';

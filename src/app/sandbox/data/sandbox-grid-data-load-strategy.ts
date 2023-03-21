@@ -1,4 +1,4 @@
-import {GridDataLoadStrategy} from '../../shared/grid-data/grid-data-load-strategy';
+import {GridDataLoadStrategy} from '../../shared/grid-data/types/grid-data-load-strategy';
 import {SandboxApiService} from './sandbox-api.service';
 import {Observable} from 'rxjs';
 import {PeriodicElement} from './periodic-element';
