@@ -13,6 +13,8 @@
   [columns]="columns"
   [selectable]="true"
   [(selectedItems)]="selectedItems"
+  [pageable]="true"
+  [pageSizeOptions]="[3, 5, 10, 25, 50]"
   (selectedItemsChange)="onSelectedItemsChange($event)"></mc-grid-data>
 
 <ng-template #actionCell let-row="row">

@@ -15,6 +15,9 @@ import {GridDataColumn} from '../grid-data-column';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {GridDataSource} from '../grid-data-source';
 import {GridDataSelectionModel} from '../grid-data-selection-model';
+import {GridPaginationComponent} from '../grid-pagination/grid-pagination.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {FormsModule} from '@angular/forms';
 
 @Pipe({
   name: 'columnDefToString',
@@ -29,7 +32,7 @@ export class ColumnDefToString implements PipeTransform {
 @Component({
   selector: 'mc-grid-data',
   standalone: true,
-  imports: [CommonModule, MatTableModule, ColumnDefToString, MatSortModule],
+  imports: [CommonModule, MatTableModule, ColumnDefToString, MatSortModule, GridPaginationComponent, MatPaginatorModule, FormsModule],
   templateUrl: './grid-data.component.html',
   styleUrls: ['./grid-data.component.scss'],
 })
@@ -38,18 +41,26 @@ export class GridDataComponent<T> implements AfterViewInit, OnInit {
   @Input() dataSource: GridDataSource<T> | null = null;
   @Input() selectable: boolean = false;
   @Input() selectedItems: T[] = [];
+  @Input() pageable: boolean = false;
+  @Input() pageSize: number = 5;
+  @Input() pageSizeOptions: number[] = [5, 10, 25, 50];
+  @Input() page: number = 5;
   @Output() selectedItemsChange = new EventEmitter<T[]>();
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(GridPaginationComponent) paginator: GridPaginationComponent<T> | undefined;
+  isAllSelected: boolean = false;
   private selectionModel: GridDataSelectionModel<T> = new GridDataSelectionModel(true, [] as T[]);
 
   announceSortChange(event: any) {
-    console.log('$event', event);
+    // do some logic if necessary
   }
 
   ngAfterViewInit(): void {
-    console.log('GridDataComponent ngAfterViewInit');
     if (this.dataSource) {
       this.dataSource.sort = this.sort;
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+      }
     }
   }
 
@@ -60,6 +71,7 @@ export class GridDataComponent<T> implements AfterViewInit, OnInit {
   }
 
   public toggleSelection(row: T): void {
+    this.isAllSelected = false;
     this.selectionModel.toggle(row);
     this.selectedItemsChange.emit(this.selectionModel.selected);
   }
@@ -73,29 +85,17 @@ export class GridDataComponent<T> implements AfterViewInit, OnInit {
       return;
     }
 
-    if (this.isAllSelected()) {
+    if (!this.isAllSelected) {
       this.selectionModel.clearSelection();
     } else {
-      this.selectionModel.selectAll(this.dataSource.data);
+      this.selectionModel.selectAll(this.dataSource.paginator ? this.dataSource.getPagedData() : this.dataSource.data);
     }
 
     this.selectedItemsChange.emit(this.selectionModel.selected);
   }
 
-  isAllSelected(): boolean {
-    const numSelected = this.selectionModel.selected.length;
-    const numRows = this.dataSource?.data.length || 0;
-    return numSelected === numRows;
-    /*
-    isAllSelected(): boolean {
-      const numSelected = this.selection.selected.length;
-      const numRows = this.dataSource?.data.length || 0;
-      const pageStart = this.dataSource?.paginator?.pageIndex * (this.dataSource?.paginator?.pageSize || 0) || 0;
-      const pageEnd = pageStart + (this.dataSource?.paginator?.pageSize || 0);
-      const numVisibleRows = Math.min(numRows, pageEnd) - pageStart;
-      return numSelected === numVisibleRows && numVisibleRows > 0;
-    }
-     */
+  onPageChanged(): void {
+    this.isAllSelected = false;
   }
 }
 

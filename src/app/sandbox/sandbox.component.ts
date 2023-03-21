@@ -6,13 +6,14 @@ import {GridDataSource} from '../shared/grid-data/grid-data-source';
 import {SandboxApiService} from './data/sandbox-api.service';
 import {SandboxGridDataLoadStrategy} from './data/sandbox-grid-data-load-strategy';
 import {PeriodicElement} from './data/periodic-element';
+import {GridPaginationComponent} from '../shared/grid-data/grid-pagination/grid-pagination.component';
 
 @Component({
   standalone: true,
   selector: 'app-sandbox-component',
   templateUrl: './sandbox.component.html',
   styleUrls: ['./sandbox.component.scss'],
-  imports: [CommonModule, GridDataComponent],
+  imports: [CommonModule, GridDataComponent, GridPaginationComponent],
 })
 export class SandboxComponent implements OnInit {
   @ViewChild('actionCell', {static: true}) actionCell!: TemplateRef<any>;

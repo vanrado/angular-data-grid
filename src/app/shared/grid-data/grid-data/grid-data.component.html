@@ -3,7 +3,7 @@
 
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
-        <input type="checkbox" (change)="toggleAllSelection()" [checked]="isAllSelected()"/>
+        <input type="checkbox" [(ngModel)]="isAllSelected" (ngModelChange)="toggleAllSelection()"/>
       </th>
       <td mat-cell *matCellDef="let row">
         <input type="checkbox" (click)="$event.stopPropagation()" (change)="toggleSelection(row)" [checked]="isRowSelected(row)"/>
@@ -28,4 +28,9 @@
   </table>
 
   <div *ngIf="dataSource.loading$ | async">Loading...</div>
+
+  <mc-grid-pagination [pageSizeOptions]="pageSizeOptions"
+                      [pageSize]="pageSize"
+                      (page)="onPageChanged()" *ngIf="pageable">
+  </mc-grid-pagination>
 </ng-container>
