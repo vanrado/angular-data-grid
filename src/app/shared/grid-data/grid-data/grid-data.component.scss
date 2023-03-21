@@ -1,0 +1,29 @@
+$mc-cell-border: 1px solid rgba(0, 0, 0, 0.12);
+
+.mdc-data-table__table {
+  font-size: 90%;
+}
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 1rem;
+  position: relative;
+  border: $mc-cell-border;
+  border-collapse: collapse;
+  padding: 10px 12px;
+  box-sizing: border-box;
+}
+
+.mdc-data-table__header-row {
+  height: 45px;
+  font-weight: 500;
+}
+
+.mdc-data-table__row {
+  height: 40px;
+}
+
+.mdc-data-table__row:last-child .mdc-data-table__cell {
+  border-bottom: $mc-cell-border;
+}
