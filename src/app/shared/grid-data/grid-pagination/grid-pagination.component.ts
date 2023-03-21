@@ -9,28 +9,7 @@ import {Subject} from 'rxjs';
   selector: 'mc-grid-pagination',
   standalone: true,
   imports: [CommonModule, MatPaginatorModule, FormsModule],
-  template: `
-    <div class="paginator-container">
-      <button class="paginator-button" (click)="firstPage()" [disabled]="!hasPreviousPage()">
-        first_page
-      </button>
-      <button class="paginator-button" (click)="previousPage()" [disabled]="!hasPreviousPage()">
-        chevron_left
-      </button>
-      <span class="paginator-info">{{ pageIndex + 1 }} / {{ totalPages }}</span>
-      <button class="paginator-button" (click)="nextPage()" [disabled]="!hasNextPage()">
-        chevron_right
-      </button>
-      <button class="paginator-button" (click)="lastPage()" [disabled]="!hasNextPage()">
-        last_page
-      </button>
-      <div class="page-size-select">
-        <select [(ngModel)]="pageSize" (ngModelChange)="onChangePageSize()">
-          <option *ngFor="let option of pageSizeOptions" [ngValue]="option">{{option}}</option>
-        </select>
-      </div>
-    </div>
-  `
+  templateUrl: './grid-pagination.component.html',
 })export class GridPaginationComponent<T> implements MatTableDataSourcePaginator {
   @Input() pageSizeOptions: number[] = [10, 25, 50];
   @Input() pageSize = 10;

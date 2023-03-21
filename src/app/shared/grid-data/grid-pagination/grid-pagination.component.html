@@ -1,1 +1,20 @@
-<p>grid-pagination works!</p>
+<div class="paginator-container">
+  <button class="paginator-button" (click)="firstPage()" [disabled]="!hasPreviousPage()">
+    first_page
+  </button>
+  <button class="paginator-button" (click)="previousPage()" [disabled]="!hasPreviousPage()">
+    chevron_left
+  </button>
+  <span class="paginator-info">{{ pageIndex + 1 }} / {{ totalPages }}</span>
+  <button class="paginator-button" (click)="nextPage()" [disabled]="!hasNextPage()">
+    chevron_right
+  </button>
+  <button class="paginator-button" (click)="lastPage()" [disabled]="!hasNextPage()">
+    last_page
+  </button>
+  <div class="page-size-select">
+    <select [(ngModel)]="pageSize" (ngModelChange)="onChangePageSize()">
+      <option *ngFor="let option of pageSizeOptions" [ngValue]="option">{{option}}</option>
+    </select>
+  </div>
+</div>
